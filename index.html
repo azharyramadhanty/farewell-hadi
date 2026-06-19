@@ -688,7 +688,7 @@
     if (message.length < 5) { showToast('Write a little more! ✍️'); return; }
 
     const msg = { name, role, message, ts: Date.now() };
-    const SCRIPT_URL = 'PASTE_YOUR_APPS_SCRIPT_URL_HERE';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxHoiDrIjTs0ZYWbpP-fXZtdRvvXz0qisztDS-FEUMv6LErdCV9mkcER10KbcD9sUnEKQ/exec';
     fetch(SCRIPT_URL, {
       method: 'POST',
       body: JSON.stringify({ name, role, message })
