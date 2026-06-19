@@ -103,7 +103,7 @@
   .admin-panel.open { display: block; }
   .admin-inner { max-width: 700px; margin: 0 auto; }
   .admin-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; margin-bottom: 8px; color: var(--accent2); }
-  .setup-callout { background: #f0ece5; border-radius: 12px; padding: 16px 20px; margin-bottom: 24px; font-size: 13px; color: var(--ink-muted); line-height: 1.7; border-left: 3px solid var(--accent2); border-radius: 0 12px 12px 0; }
+  .setup-callout { background: #f0ece5; padding: 16px 20px; margin-bottom: 24px; font-size: 13px; color: var(--ink-muted); line-height: 1.7; border-left: 3px solid var(--accent2); border-radius: 0 12px 12px 0; }
   .setup-callout strong { color: var(--ink); }
   .admin-url-row { display: flex; gap: 10px; margin-bottom: 20px; }
   .admin-url-input { flex: 1; border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; font-family: 'Inter', sans-serif; font-size: 13px; outline: none; color: var(--ink); }
@@ -155,8 +155,8 @@
 </div>
 
 <div class="sync-bar">
-  <span class="sync-dot" id="sync-dot"></span>
-  <span id="sync-label">Connect your Google Sheet in the admin panel below to enable live sync</span>
+  <span class="sync-dot loading" id="sync-dot"></span>
+  <span id="sync-label">Connecting to Google Sheets…</span>
   <button class="btn-refresh" id="btn-refresh" onclick="fetchMessages()" style="display:none">↻ Refresh</button>
 </div>
 
@@ -200,11 +200,10 @@
   <div class="admin-inner">
     <div class="admin-title">Admin panel</div>
     <div class="setup-callout">
-      <strong>One-time setup:</strong> paste your Google Apps Script Web App URL below to connect live sync.
-      It looks like <code style="background:rgba(0,0,0,0.06);padding:1px 6px;border-radius:4px;font-family:monospace;font-size:12px">https://script.google.com/macros/s/XXXX.../exec</code>
+      <strong>Script URL is hardcoded.</strong> Use the field below only if you need to switch to a different deployment.
     </div>
 
-    <p style="font-size:13px;color:var(--ink-muted);margin-bottom:8px;">Apps Script URL</p>
+    <p style="font-size:13px;color:var(--ink-muted);margin-bottom:8px;">Apps Script URL (override)</p>
     <div class="admin-url-row">
       <input type="text" class="admin-url-input" id="admin-url-input" placeholder="https://script.google.com/macros/s/.../exec">
       <button class="btn-save-url" onclick="saveScriptUrl()">Save & test</button>
@@ -230,16 +229,22 @@
 <div class="toast" id="toast"></div>
 
 <script>
+  /* ── HARDCODED — no setup needed ── */
+  const HARDCODED_URL = 'https://script.google.com/macros/s/AKfycbybkPPOLIZJx4s5m0lHe1REPrAFGveQNKV3E_39OTIudrOaG1WWbk-Ch3AMcUTTD96D/exec';
+
   const STORAGE_KEY = 'farewell_messages_v2';
   const NAME_KEY    = 'farewell_boss_name';
   const URL_KEY     = 'farewell_script_url';
   const COLORS      = 5;
   let messages = [];
 
+  function getScriptUrl() {
+    return localStorage.getItem(URL_KEY) || HARDCODED_URL;
+  }
+
   function getInitials(n) { return n.trim().split(/\s+/).map(w=>w[0].toUpperCase()).slice(0,2).join(''); }
   function colorIndex(n) { let h=0; for(let i=0;i<n.length;i++) h=(h*31+n.charCodeAt(i))%COLORS; return h; }
   function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-  function getScriptUrl() { return localStorage.getItem(URL_KEY) || ''; }
 
   function renderCard(msg, idx) {
     const ci = colorIndex(msg.name);
@@ -274,10 +279,8 @@
     document.getElementById('btn-refresh').style.display = (state==='ok'||state==='error') ? 'inline-block' : 'none';
   }
 
-  /* JSONP fetch — bypasses CORS entirely */
   function fetchMessages() {
     const url = getScriptUrl();
-    if (!url) { setSyncStatus('', 'Connect your Google Sheet in the admin panel below to enable live sync'); return; }
     setSyncStatus('loading', 'Fetching messages…');
 
     const cbName = 'gscb_' + Date.now();
@@ -286,7 +289,7 @@
     const timeout = setTimeout(() => {
       delete window[cbName];
       script.remove();
-      setSyncStatus('error', 'Request timed out — check your script URL');
+      setSyncStatus('error', 'Request timed out — check Apps Script deployment');
     }, 8000);
 
     window[cbName] = function(data) {
@@ -299,59 +302,46 @@
         renderWall();
         setSyncStatus('ok', `Live · ${messages.length} message${messages.length!==1?'s':''} · last updated just now`);
       } else {
-        setSyncStatus('error', 'Unexpected response from script — check your Apps Script logs');
+        setSyncStatus('error', 'Unexpected response — check Apps Script logs');
       }
     };
 
     script.onerror = function() {
       clearTimeout(timeout);
       delete window[cbName];
-      setSyncStatus('error', 'Could not reach Apps Script — check the URL in admin panel');
+      setSyncStatus('error', 'Could not reach Apps Script — check deployment settings');
     };
 
     script.src = url + '?action=get&callback=' + cbName;
     document.head.appendChild(script);
   }
 
-  /* Submit → POST to Apps Script, then re-fetch */
   async function submitMessage() {
     const name    = document.getElementById('input-name').value.trim();
     const role    = document.getElementById('input-role').value.trim();
     const message = document.getElementById('input-message').value.trim();
     const url     = getScriptUrl();
 
-    if (!name)           { showToast('Please enter your name 👋'); return; }
+    if (!name)              { showToast('Please enter your name 👋'); return; }
     if (message.length < 5) { showToast('Write a little more! ✍️'); return; }
 
     const btn = document.getElementById('btn-submit');
     btn.disabled = true;
     btn.textContent = 'Posting…';
 
-    if (url) {
-      try {
-        await fetch(url, {
-          method: 'POST',
-          mode: 'no-cors',
-          body: JSON.stringify({ action: 'post', name, role, message })
-        });
-        document.getElementById('input-name').value    = '';
-        document.getElementById('input-role').value    = '';
-        document.getElementById('input-message').value = '';
-        showToast('Posted! Loading wall…', 'success');
-        /* small delay to let Sheets write before we read */
-        setTimeout(fetchMessages, 1200);
-      } catch(e) {
-        showToast('Network error — try again', 'error');
-      }
-    } else {
-      /* no URL yet — save locally as fallback */
-      messages.unshift({ name, role, message });
-      saveLocal();
-      renderWall();
+    try {
+      await fetch(url, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: JSON.stringify({ action: 'post', name, role, message })
+      });
       document.getElementById('input-name').value    = '';
       document.getElementById('input-role').value    = '';
       document.getElementById('input-message').value = '';
-      showToast('Saved locally. Connect Google Sheets in admin to sync.', '');
+      showToast('Posted! Loading wall…', 'success');
+      setTimeout(fetchMessages, 1200);
+    } catch(e) {
+      showToast('Network error — try again', 'error');
     }
 
     btn.disabled    = false;
@@ -362,7 +352,7 @@
     const panel = document.getElementById('admin-panel');
     panel.classList.toggle('open');
     if (panel.classList.contains('open')) {
-      document.getElementById('admin-url-input').value  = getScriptUrl();
+      document.getElementById('admin-url-input').value  = localStorage.getItem(URL_KEY) || '';
       document.getElementById('admin-name-input').value = localStorage.getItem(NAME_KEY) || '';
     }
   }
@@ -402,7 +392,7 @@
   if (savedName) document.getElementById('hero-name').textContent = savedName;
   loadLocal();
   renderWall();
-  if (getScriptUrl()) fetchMessages();
+  fetchMessages();
 </script>
 </body>
 </html>
