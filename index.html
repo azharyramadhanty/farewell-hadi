@@ -18,492 +18,126 @@
     --card-bg: #FFFFFF;
     --border: rgba(0,0,0,0.08);
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; }
 
-  body {
-    font-family: 'Inter', sans-serif;
-    background: var(--bg);
-    color: var(--ink);
-    min-height: 100vh;
-  }
+  /* HERO */
+  .hero { text-align: center; padding: 80px 24px 60px; }
+  .hero-tape { display: inline-block; background: var(--accent2); color: #fff; font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; padding: 6px 18px; border-radius: 999px; margin-bottom: 28px; }
+  .hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(48px, 10vw, 96px); font-weight: 800; line-height: 1.0; letter-spacing: -0.02em; }
+  .hero h1 .name-highlight { display: block; color: var(--accent1); position: relative; }
+  .hero h1 .name-highlight::after { content: ''; position: absolute; bottom: 4px; left: 0; right: 0; height: 6px; background: var(--accent4); opacity: 0.5; border-radius: 2px; }
+  .hero-sub { font-size: 18px; color: var(--ink-muted); margin-top: 20px; }
+  .hero-dots { display: flex; justify-content: center; gap: 10px; margin-top: 32px; }
+  .hero-dots span { width: 10px; height: 10px; border-radius: 50%; }
 
-  /* ── HERO ── */
-  .hero {
-    text-align: center;
-    padding: 80px 24px 60px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-tape {
-    display: inline-block;
-    background: var(--accent2);
-    color: #fff;
-    font-family: 'Syne', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    padding: 6px 18px;
-    border-radius: 999px;
-    margin-bottom: 28px;
-  }
-
-  .hero h1 {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(48px, 10vw, 96px);
-    font-weight: 800;
-    line-height: 1.0;
-    letter-spacing: -0.02em;
-    color: var(--ink);
-  }
-
-  .hero h1 .name-highlight {
-    display: block;
-    color: var(--accent1);
-    position: relative;
-  }
-
-  .hero h1 .name-highlight::after {
-    content: '';
-    position: absolute;
-    bottom: 4px;
-    left: 0; right: 0;
-    height: 6px;
-    background: var(--accent4);
-    opacity: 0.5;
-    border-radius: 2px;
-  }
-
-  .hero-sub {
-    font-size: 18px;
-    color: var(--ink-muted);
-    margin-top: 20px;
-    font-weight: 400;
-  }
-
-  .hero-dots {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 32px;
-  }
-
-  .hero-dots span {
-    width: 10px; height: 10px;
-    border-radius: 50%;
-  }
-
-  /* ── STATS BAR ── */
-  .stats-bar {
-    display: flex;
-    justify-content: center;
-    gap: 0;
-    background: var(--ink);
-    color: #fff;
-    overflow-x: auto;
-  }
-
-  .stat-item {
-    padding: 16px 32px;
-    text-align: center;
-    border-right: 1px solid rgba(255,255,255,0.1);
-    flex-shrink: 0;
-  }
-
+  /* STATS BAR */
+  .stats-bar { display: flex; justify-content: center; background: var(--ink); color: #fff; overflow-x: auto; }
+  .stat-item { padding: 16px 32px; text-align: center; border-right: 1px solid rgba(255,255,255,0.1); flex-shrink: 0; }
   .stat-item:last-child { border-right: none; }
+  .stat-num { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; display: block; }
+  .stat-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.6; margin-top: 2px; }
 
-  .stat-num {
-    font-family: 'Syne', sans-serif;
-    font-size: 28px;
-    font-weight: 800;
-    display: block;
-  }
+  /* SYNC STATUS */
+  .sync-bar { background: #f0ece5; border-bottom: 1px solid var(--border); padding: 10px 24px; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 13px; color: var(--ink-muted); }
+  .sync-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ink-muted); flex-shrink: 0; transition: background 0.3s; }
+  .sync-dot.ok { background: var(--accent5); }
+  .sync-dot.error { background: var(--accent1); }
+  .sync-dot.loading { background: var(--accent4); animation: pulse 1s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .btn-refresh { background: none; border: 1px solid var(--border); border-radius: 6px; padding: 4px 12px; font-size: 12px; cursor: pointer; color: var(--ink-muted); transition: all 0.2s; }
+  .btn-refresh:hover { border-color: var(--accent2); color: var(--accent2); }
 
-  .stat-label {
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    opacity: 0.6;
-    margin-top: 2px;
-  }
-
-  /* ── WALL ── */
-  .wall-section {
-    padding: 60px 24px;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-
-  .section-label {
-    font-family: 'Syne', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--ink-muted);
-    margin-bottom: 32px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .section-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  .masonry {
-    columns: 3;
-    column-gap: 16px;
-  }
-
+  /* WALL */
+  .wall-section { padding: 60px 24px; max-width: 1100px; margin: 0 auto; }
+  .section-label { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 32px; display: flex; align-items: center; gap: 12px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .masonry { columns: 3; column-gap: 16px; }
   @media (max-width: 860px) { .masonry { columns: 2; } }
   @media (max-width: 540px) { .masonry { columns: 1; } }
-
-  .msg-card {
-    break-inside: avoid;
-    background: var(--card-bg);
-    border-radius: 16px;
-    padding: 24px;
-    margin-bottom: 16px;
-    border: 1px solid var(--border);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .msg-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 4px;
-  }
-
+  .msg-card { break-inside: avoid; background: var(--card-bg); border-radius: 16px; padding: 24px; margin-bottom: 16px; border: 1px solid var(--border); position: relative; overflow: hidden; animation: fadeInUp 0.4s ease both; }
+  .msg-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
   .msg-card[data-color="0"]::before { background: var(--accent1); }
   .msg-card[data-color="1"]::before { background: var(--accent2); }
   .msg-card[data-color="2"]::before { background: var(--accent3); }
   .msg-card[data-color="3"]::before { background: var(--accent4); }
   .msg-card[data-color="4"]::before { background: var(--accent5); }
-
-  .msg-quote-mark {
-    font-family: 'Syne', sans-serif;
-    font-size: 64px;
-    line-height: 0.6;
-    color: var(--border);
-    margin-bottom: 8px;
-    display: block;
-  }
-
-  .msg-text {
-    font-size: 15px;
-    line-height: 1.7;
-    color: var(--ink);
-    margin-bottom: 20px;
-  }
-
-  .msg-footer {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .msg-avatar {
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Syne', sans-serif;
-    font-size: 13px;
-    font-weight: 800;
-    color: #fff;
-    flex-shrink: 0;
-  }
-
+  .msg-quote-mark { font-family: 'Syne', sans-serif; font-size: 64px; line-height: 0.6; color: var(--border); margin-bottom: 8px; display: block; }
+  .msg-text { font-size: 15px; line-height: 1.7; color: var(--ink); margin-bottom: 20px; }
+  .msg-footer { display: flex; align-items: center; gap: 10px; }
+  .msg-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 800; color: #fff; flex-shrink: 0; }
   .msg-avatar[data-color="0"] { background: var(--accent1); }
   .msg-avatar[data-color="1"] { background: var(--accent2); }
   .msg-avatar[data-color="2"] { background: var(--accent3); }
   .msg-avatar[data-color="3"] { background: var(--accent4); }
   .msg-avatar[data-color="4"] { background: var(--accent5); }
+  .msg-name { font-weight: 600; font-size: 14px; }
+  .msg-role { font-size: 12px; color: var(--ink-muted); }
+  .empty-state { text-align: center; padding: 60px 24px; color: var(--ink-muted); display: none; }
+  .empty-icon { font-size: 48px; margin-bottom: 16px; }
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 
-  .msg-name {
-    font-weight: 600;
-    font-size: 14px;
-  }
-
-  .msg-role {
-    font-size: 12px;
-    color: var(--ink-muted);
-  }
-
-  /* ── EMPTY STATE ── */
-  .empty-state {
-    text-align: center;
-    padding: 60px 24px;
-    color: var(--ink-muted);
-    display: none;
-  }
-
-  .empty-icon {
-    font-size: 48px;
-    margin-bottom: 16px;
-  }
-
-  /* ── SUBMIT SECTION ── */
-  .submit-section {
-    background: var(--ink);
-    color: #fff;
-    padding: 60px 24px;
-  }
-
-  .submit-inner {
-    max-width: 600px;
-    margin: 0 auto;
-  }
-
-  .submit-heading {
-    font-family: 'Syne', sans-serif;
-    font-size: 32px;
-    font-weight: 800;
-    margin-bottom: 8px;
-  }
-
+  /* SUBMIT SECTION */
+  .submit-section { background: var(--ink); color: #fff; padding: 60px 24px; }
+  .submit-inner { max-width: 600px; margin: 0 auto; }
+  .submit-heading { font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800; margin-bottom: 8px; }
   .submit-heading span { color: var(--accent1); }
-
-  .submit-sub {
-    color: rgba(255,255,255,0.55);
-    font-size: 15px;
-    margin-bottom: 32px;
-  }
-
+  .submit-sub { color: rgba(255,255,255,0.55); font-size: 15px; margin-bottom: 32px; }
   .form-group { margin-bottom: 16px; }
-
-  .form-group label {
-    display: block;
-    font-size: 12px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.5);
-    margin-bottom: 8px;
-  }
-
-  .form-group input,
-  .form-group textarea {
-    width: 100%;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 12px;
-    color: #fff;
-    font-family: 'Inter', sans-serif;
-    font-size: 15px;
-    padding: 14px 16px;
-    outline: none;
-    transition: border-color 0.2s;
-    resize: none;
-  }
-
-  .form-group input::placeholder,
-  .form-group textarea::placeholder { color: rgba(255,255,255,0.3); }
-
-  .form-group input:focus,
-  .form-group textarea:focus { border-color: var(--accent1); }
-
-  .form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-
+  .form-group label { display: block; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 8px; }
+  .form-group input, .form-group textarea { width: 100%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; color: #fff; font-family: 'Inter', sans-serif; font-size: 15px; padding: 14px 16px; outline: none; transition: border-color 0.2s; resize: none; }
+  .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255,255,255,0.3); }
+  .form-group input:focus, .form-group textarea:focus { border-color: var(--accent1); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   @media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
-
-  .btn-submit {
-    background: var(--accent1);
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    font-family: 'Syne', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    padding: 16px 32px;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 8px;
-    transition: transform 0.15s, background 0.15s;
-  }
-
+  .btn-submit { background: var(--accent1); color: #fff; border: none; border-radius: 12px; font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; padding: 16px 32px; cursor: pointer; width: 100%; margin-top: 8px; transition: transform 0.15s, background 0.15s; }
   .btn-submit:hover { background: #e55a28; transform: translateY(-1px); }
   .btn-submit:active { transform: translateY(0); }
+  .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  .submit-note { font-size: 12px; color: rgba(255,255,255,0.35); text-align: center; margin-top: 16px; }
 
-  .submit-note {
-    font-size: 12px;
-    color: rgba(255,255,255,0.35);
-    text-align: center;
-    margin-top: 16px;
-  }
+  /* TOAST */
+  .toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--ink); color: #fff; padding: 14px 24px; border-radius: 999px; font-size: 14px; font-weight: 500; opacity: 0; transition: opacity 0.3s, transform 0.3s; pointer-events: none; z-index: 999; border: 1px solid rgba(255,255,255,0.15); }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast.success { border-color: var(--accent5); }
+  .toast.error { border-color: var(--accent1); }
 
-  /* ── TOAST ── */
-  .toast {
-    position: fixed;
-    bottom: 32px;
-    left: 50%;
-    transform: translateX(-50%) translateY(20px);
-    background: var(--ink);
-    color: #fff;
-    padding: 14px 24px;
-    border-radius: 999px;
-    font-size: 14px;
-    font-weight: 500;
-    opacity: 0;
-    transition: opacity 0.3s, transform 0.3s;
-    pointer-events: none;
-    z-index: 999;
-    border: 1px solid rgba(255,255,255,0.15);
-  }
-
-  .toast.show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-
-  /* ── ADMIN PANEL ── */
-  .admin-toggle {
-    text-align: center;
-    padding: 20px;
-    background: #f0ece5;
-  }
-
-  .btn-admin {
-    background: none;
-    border: 1.5px dashed var(--ink-muted);
-    border-radius: 8px;
-    color: var(--ink-muted);
-    font-family: 'Inter', sans-serif;
-    font-size: 13px;
-    padding: 8px 20px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .btn-admin:hover {
-    border-color: var(--accent2);
-    color: var(--accent2);
-  }
-
-  .admin-panel {
-    background: #fff;
-    border-top: 1px solid var(--border);
-    padding: 32px 24px;
-    display: none;
-  }
-
+  /* ADMIN */
+  .admin-toggle { text-align: center; padding: 20px; background: #f0ece5; }
+  .btn-admin { background: none; border: 1.5px dashed var(--ink-muted); border-radius: 8px; color: var(--ink-muted); font-family: 'Inter', sans-serif; font-size: 13px; padding: 8px 20px; cursor: pointer; transition: all 0.2s; }
+  .btn-admin:hover { border-color: var(--accent2); color: var(--accent2); }
+  .admin-panel { background: #fff; border-top: 1px solid var(--border); padding: 32px 24px; display: none; }
   .admin-panel.open { display: block; }
-
-  .admin-inner {
-    max-width: 700px;
-    margin: 0 auto;
-  }
-
-  .admin-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 18px;
-    font-weight: 800;
-    margin-bottom: 8px;
-    color: var(--accent2);
-  }
-
-  .admin-desc {
-    font-size: 13px;
-    color: var(--ink-muted);
-    margin-bottom: 20px;
-    line-height: 1.6;
-  }
-
-  .admin-desc code {
-    background: #f0ece5;
-    padding: 1px 6px;
-    border-radius: 4px;
-    font-family: monospace;
-    font-size: 12px;
-  }
-
-  .admin-textarea {
-    width: 100%;
-    height: 220px;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    font-family: monospace;
-    font-size: 13px;
-    padding: 16px;
-    outline: none;
-    color: var(--ink);
-    line-height: 1.6;
-    resize: vertical;
-  }
-
-  .admin-textarea:focus { border-color: var(--accent2); }
-
-  .admin-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 12px;
-    flex-wrap: wrap;
-  }
-
-  .btn-load {
-    background: var(--accent2);
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    font-size: 14px;
-    padding: 12px 24px;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-
-  .btn-load:hover { background: #6d28d9; }
-
-  .btn-clear-all {
-    background: none;
-    border: 1px solid #fca5a5;
-    border-radius: 10px;
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    color: #ef4444;
-    padding: 12px 20px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
+  .admin-inner { max-width: 700px; margin: 0 auto; }
+  .admin-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; margin-bottom: 8px; color: var(--accent2); }
+  .admin-desc { font-size: 13px; color: var(--ink-muted); margin-bottom: 20px; line-height: 1.6; }
+  .admin-desc code { background: #f0ece5; padding: 1px 6px; border-radius: 4px; font-family: monospace; font-size: 12px; }
+  .admin-url-row { display: flex; gap: 10px; margin-bottom: 20px; }
+  .admin-url-input { flex: 1; border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; font-family: 'Inter', sans-serif; font-size: 13px; outline: none; color: var(--ink); }
+  .admin-url-input:focus { border-color: var(--accent2); }
+  .btn-save-url { background: var(--accent2); color: #fff; border: none; border-radius: 10px; padding: 12px 20px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 14px; white-space: nowrap; }
+  .btn-save-url:hover { background: #6d28d9; }
+  .admin-name-row { display: flex; gap: 10px; margin-bottom: 24px; }
+  .admin-name-input { flex: 1; border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; font-family: 'Inter', sans-serif; font-size: 14px; outline: none; color: var(--ink); }
+  .btn-apply { background: var(--accent2); color: #fff; border: none; border-radius: 8px; padding: 10px 20px; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 14px; }
+  .admin-actions { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+  .btn-fetch { background: var(--accent3); color: #fff; border: none; border-radius: 10px; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px; padding: 12px 24px; cursor: pointer; transition: background 0.2s; }
+  .btn-fetch:hover { background: #0284c7; }
+  .btn-clear-all { background: none; border: 1px solid #fca5a5; border-radius: 10px; font-family: 'Inter', sans-serif; font-size: 14px; color: #ef4444; padding: 12px 20px; cursor: pointer; transition: all 0.2s; }
   .btn-clear-all:hover { background: #fef2f2; }
+  .setup-callout { background: #f0ece5; border-radius: 12px; padding: 16px 20px; margin-bottom: 24px; font-size: 13px; color: var(--ink-muted); line-height: 1.7; border-left: 3px solid var(--accent2); }
+  .setup-callout strong { color: var(--ink); }
 
-  /* ── FOOTER ── */
-  footer {
-    text-align: center;
-    padding: 40px 24px;
-    font-size: 13px;
-    color: var(--ink-muted);
-  }
-
-  /* ── ANIMATIONS ── */
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .msg-card { animation: fadeInUp 0.4s ease both; }
+  footer { text-align: center; padding: 40px 24px; font-size: 13px; color: var(--ink-muted); }
 </style>
 </head>
 <body>
 
-<!-- HERO -->
 <section class="hero">
   <div class="hero-tape">From all of us 💛</div>
   <h1>
     So long,
-    <span class="name-highlight" id="hero-name">Boss</span>
+    <span class="name-highlight" id="hero-name">Hadi</span>
   </h1>
   <p class="hero-sub" id="hero-sub">You shaped us. We won't forget that.</p>
   <div class="hero-dots">
@@ -515,7 +149,6 @@
   </div>
 </section>
 
-<!-- STATS BAR -->
 <div class="stats-bar">
   <div class="stat-item">
     <span class="stat-num" id="stat-count">0</span>
@@ -531,7 +164,12 @@
   </div>
 </div>
 
-<!-- MESSAGE WALL -->
+<div class="sync-bar">
+  <span class="sync-dot" id="sync-dot"></span>
+  <span id="sync-label">Connect your Google Sheet in the admin panel below to enable live sync</span>
+  <button class="btn-refresh" id="btn-refresh" onclick="fetchMessages()" style="display:none">↻ Refresh</button>
+</div>
+
 <section class="wall-section">
   <div class="section-label">Messages from the team</div>
   <div class="masonry" id="wall"></div>
@@ -541,12 +179,10 @@
   </div>
 </section>
 
-<!-- SUBMIT FORM -->
 <section class="submit-section">
   <div class="submit-inner">
     <h2 class="submit-heading">Leave your <span>message</span></h2>
-    <p class="submit-sub">A few words go a long way. What do you want them to remember?</p>
-
+    <p class="submit-sub">A few words go a long way. What do you want Hadi to remember?</p>
     <div class="form-row">
       <div class="form-group">
         <label>Your name</label>
@@ -557,46 +193,43 @@
         <input type="text" id="input-role" placeholder="e.g. Engineer, DAI Team" maxlength="80">
       </div>
     </div>
-
     <div class="form-group">
       <label>Your message</label>
       <textarea id="input-message" rows="5" placeholder="Write something heartfelt, funny, or honest…" maxlength="600"></textarea>
     </div>
-
-    <button class="btn-submit" onclick="submitMessage()">Post to the wall →</button>
-    <p class="submit-note">Messages are saved in your browser. Use the admin panel to export &amp; reload them.</p>
+    <button class="btn-submit" id="btn-submit" onclick="submitMessage()">Post to the wall →</button>
+    <p class="submit-note" id="submit-note">Messages go straight to the shared wall once connected to Google Sheets.</p>
   </div>
 </section>
 
-<!-- ADMIN TOGGLE -->
 <div class="admin-toggle">
   <button class="btn-admin" onclick="toggleAdmin()">⚙ Admin panel</button>
 </div>
 
-<!-- ADMIN PANEL -->
 <div class="admin-panel" id="admin-panel">
   <div class="admin-inner">
     <div class="admin-title">Admin panel</div>
-    <p class="admin-desc">
-      Change the name in the hero by editing <code>BOSS_NAME</code> below.<br>
-      Paste exported messages (JSON) here to reload them, or copy the current data to back up.
-      People who submit on their own device won't appear automatically — ask them to copy their submission text and send it to you, then paste it here.
-    </p>
 
-    <div style="margin-bottom: 20px; padding: 16px; background: #f7f4ef; border-radius: 12px;">
-      <label style="font-size: 12px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 8px;">Boss name (shown in hero)</label>
-      <div style="display: flex; gap: 10px;">
-        <input type="text" id="admin-name-input" placeholder="e.g. Pak Budi" style="flex: 1; border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; font-family: Inter, sans-serif; font-size: 14px; outline: none; color: var(--ink);" />
-        <button onclick="applyName()" style="background: var(--accent2); color: #fff; border: none; border-radius: 8px; padding: 10px 20px; font-weight: 600; cursor: pointer; font-family: Inter, sans-serif; font-size: 14px;">Apply</button>
-      </div>
+    <div class="setup-callout">
+      <strong>Setup required (one time):</strong> Paste your Google Apps Script Web App URL below to connect live sync.
+      The URL looks like <code>https://script.google.com/macros/s/XXXX.../exec</code>
     </div>
 
-    <textarea class="admin-textarea" id="admin-data" placeholder='Paste exported JSON here, e.g. [{"name":"Dicky","role":"Engineer","message":"You were the best!"}]'></textarea>
+    <p style="font-size:13px;color:var(--ink-muted);margin-bottom:8px;">Apps Script URL</p>
+    <div class="admin-url-row">
+      <input type="text" class="admin-url-input" id="admin-url-input" placeholder="https://script.google.com/macros/s/.../exec">
+      <button class="btn-save-url" onclick="saveScriptUrl()">Save & test</button>
+    </div>
+
+    <p style="font-size:13px;color:var(--ink-muted);margin-bottom:8px;">Boss name (shown in hero)</p>
+    <div class="admin-name-row">
+      <input type="text" class="admin-name-input" id="admin-name-input" placeholder="e.g. Pak Hadi">
+      <button class="btn-apply" onclick="applyName()">Apply</button>
+    </div>
 
     <div class="admin-actions">
-      <button class="btn-load" onclick="loadFromAdmin()">Load messages</button>
-      <button class="btn-load" style="background: var(--accent3);" onclick="exportToAdmin()">Export current data</button>
-      <button class="btn-clear-all" onclick="clearAll()">Clear all messages</button>
+      <button class="btn-fetch" onclick="fetchMessages()">↻ Pull latest from Sheets</button>
+      <button class="btn-clear-all" onclick="clearAll()">Clear local cache</button>
     </div>
   </div>
 </div>
@@ -608,113 +241,161 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  const STORAGE_KEY = 'farewell_messages_v1';
-  const NAME_KEY = 'farewell_boss_name';
+  const STORAGE_KEY = 'farewell_messages_v2';
+  const NAME_KEY    = 'farewell_boss_name';
+  const URL_KEY     = 'farewell_script_url';
+  const COLORS      = 5;
   let messages = [];
 
-  const COLORS = 5;
-
+  /* ── helpers ── */
   function getInitials(name) {
-    return name.trim().split(/\s+/).map(w => w[0].toUpperCase()).slice(0, 2).join('');
+    return name.trim().split(/\s+/).map(w => w[0].toUpperCase()).slice(0,2).join('');
   }
-
   function colorIndex(name) {
     let h = 0;
     for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) % COLORS;
     return h;
   }
+  function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function getScriptUrl() {
+    return localStorage.getItem(URL_KEY) || '';
+  }
 
+  /* ── render ── */
   function renderCard(msg, idx) {
     const ci = colorIndex(msg.name);
     const initials = getInitials(msg.name || '?');
     const role = msg.role ? `<span class="msg-role">${escHtml(msg.role)}</span>` : '';
     return `
-      <div class="msg-card" data-color="${ci}" style="animation-delay:${(idx % 9) * 0.05}s">
+      <div class="msg-card" data-color="${ci}" style="animation-delay:${(idx%9)*0.05}s">
         <span class="msg-quote-mark">"</span>
         <p class="msg-text">${escHtml(msg.message)}</p>
         <div class="msg-footer">
           <div class="msg-avatar" data-color="${ci}">${initials}</div>
-          <div>
-            <div class="msg-name">${escHtml(msg.name)}</div>
-            ${role}
-          </div>
+          <div><div class="msg-name">${escHtml(msg.name)}</div>${role}</div>
         </div>
       </div>`;
   }
 
-  function escHtml(s) {
-    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
-
   function renderWall() {
-    const wall = document.getElementById('wall');
+    const wall  = document.getElementById('wall');
     const empty = document.getElementById('empty-state');
-    if (messages.length === 0) {
-      wall.innerHTML = '';
-      empty.style.display = 'block';
-    } else {
-      empty.style.display = 'none';
-      wall.innerHTML = messages.map((m, i) => renderCard(m, i)).join('');
-    }
+    if (messages.length === 0) { wall.innerHTML = ''; empty.style.display = 'block'; }
+    else { empty.style.display = 'none'; wall.innerHTML = messages.map((m,i) => renderCard(m,i)).join(''); }
     updateStats();
   }
 
   function updateStats() {
     document.getElementById('stat-count').textContent = messages.length;
     document.getElementById('stat-teams').textContent = messages.length > 0
-      ? new Set(messages.map(m => m.name.toLowerCase().trim())).size
-      : '—';
-    const wordCount = messages.reduce((acc, m) => acc + m.message.trim().split(/\s+/).filter(Boolean).length, 0);
-    document.getElementById('stat-words').textContent = wordCount;
+      ? new Set(messages.map(m => m.name.toLowerCase().trim())).size : '—';
+    const words = messages.reduce((acc,m) => acc + m.message.trim().split(/\s+/).filter(Boolean).length, 0);
+    document.getElementById('stat-words').textContent = words;
   }
 
-  function saveMessages() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+  function saveLocal() { localStorage.setItem(STORAGE_KEY, JSON.stringify(messages)); }
+  function loadLocal() {
+    try { const r = localStorage.getItem(STORAGE_KEY); if (r) messages = JSON.parse(r); } catch(e) { messages=[]; }
   }
 
-  function loadMessages() {
+  /* ── sync status UI ── */
+  function setSyncStatus(state, label) {
+    const dot = document.getElementById('sync-dot');
+    const lbl = document.getElementById('sync-label');
+    const btn = document.getElementById('btn-refresh');
+    dot.className = 'sync-dot ' + state;
+    lbl.textContent = label;
+    btn.style.display = (state === 'ok' || state === 'error') ? 'inline-block' : 'none';
+  }
+
+  /* ── fetch from sheet ── */
+  async function fetchMessages() {
+    const url = getScriptUrl();
+    if (!url) { setSyncStatus('', 'Connect your Google Sheet in the admin panel below to enable live sync'); return; }
+    setSyncStatus('loading', 'Fetching messages…');
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) messages = JSON.parse(raw);
-    } catch(e) { messages = []; }
+      const res = await fetch(url + '?action=get', { method: 'GET' });
+      const data = await res.json();
+      if (data.status === 'ok' && Array.isArray(data.messages)) {
+        messages = data.messages;
+        saveLocal();
+        renderWall();
+        setSyncStatus('ok', `Live · ${messages.length} message${messages.length!==1?'s':''} · last updated just now`);
+      } else {
+        throw new Error('bad response');
+      }
+    } catch(e) {
+      setSyncStatus('error', 'Could not reach Google Sheets — check your script URL');
+    }
   }
 
-  function submitMessage() {
-    const name = document.getElementById('input-name').value.trim();
-    const role = document.getElementById('input-role').value.trim();
+  /* ── submit ── */
+  async function submitMessage() {
+    const name    = document.getElementById('input-name').value.trim();
+    const role    = document.getElementById('input-role').value.trim();
     const message = document.getElementById('input-message').value.trim();
+    const url     = getScriptUrl();
 
-    if (!name) { showToast('Please enter your name 👋'); return; }
+    if (!name)          { showToast('Please enter your name 👋'); return; }
     if (message.length < 5) { showToast('Write a little more! ✍️'); return; }
 
-    const msg = { name, role, message, ts: Date.now() };
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxHoiDrIjTs0ZYWbpP-fXZtdRvvXz0qisztDS-FEUMv6LErdCV9mkcER10KbcD9sUnEKQ/exec';
-    fetch(SCRIPT_URL, {
-      method: 'POST',
-      body: JSON.stringify({ name, role, message })
-    }).catch(() => {});
-    messages.unshift(msg);
-    saveMessages();
-    renderWall();
+    const btn = document.getElementById('btn-submit');
+    btn.disabled = true;
+    btn.textContent = 'Posting…';
 
-    document.getElementById('input-name').value = '';
-    document.getElementById('input-role').value = '';
+    const msg = { name, role, message };
+
+    if (url) {
+      try {
+        await fetch(url, {
+          method: 'POST',
+          body: JSON.stringify({ action: 'post', ...msg })
+        });
+        showToast('Message posted! 🎉', 'success');
+        // pull fresh list so the submitter sees their own message
+        setTimeout(fetchMessages, 800);
+      } catch(e) {
+        // fallback to local if fetch fails
+        messages.unshift({ ...msg, ts: Date.now() });
+        saveLocal();
+        renderWall();
+        showToast('Saved locally (network error)', 'error');
+      }
+    } else {
+      // no script URL yet — save locally only
+      messages.unshift({ ...msg, ts: Date.now() });
+      saveLocal();
+      renderWall();
+      showToast('Saved! Connect Google Sheets to sync with everyone.', '');
+    }
+
+    document.getElementById('input-name').value    = '';
+    document.getElementById('input-role').value    = '';
     document.getElementById('input-message').value = '';
-
-    showToast('Message posted! 🎉');
-
-    setTimeout(() => {
-      document.getElementById('wall').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 300);
+    btn.disabled    = false;
+    btn.textContent = 'Post to the wall →';
   }
 
+  /* ── admin ── */
   function toggleAdmin() {
     const panel = document.getElementById('admin-panel');
     panel.classList.toggle('open');
     if (panel.classList.contains('open')) {
-      const savedName = localStorage.getItem(NAME_KEY) || '';
-      document.getElementById('admin-name-input').value = savedName;
+      document.getElementById('admin-url-input').value  = getScriptUrl();
+      document.getElementById('admin-name-input').value = localStorage.getItem(NAME_KEY) || '';
     }
+  }
+
+  function saveScriptUrl() {
+    const val = document.getElementById('admin-url-input').value.trim();
+    if (!val.startsWith('https://script.google.com')) {
+      showToast('That doesn\'t look like an Apps Script URL', 'error'); return;
+    }
+    localStorage.setItem(URL_KEY, val);
+    showToast('URL saved — testing connection…', '');
+    fetchMessages();
   }
 
   function applyName() {
@@ -725,49 +406,30 @@
     showToast('Name updated ✓');
   }
 
-  function exportToAdmin() {
-    document.getElementById('admin-data').value = JSON.stringify(messages, null, 2);
-    showToast('Data exported — copy the text above ↑');
-  }
-
-  function loadFromAdmin() {
-    const raw = document.getElementById('admin-data').value.trim();
-    if (!raw) { showToast('Nothing to load'); return; }
-    try {
-      const parsed = JSON.parse(raw);
-      if (!Array.isArray(parsed)) throw new Error();
-      messages = parsed;
-      saveMessages();
-      renderWall();
-      showToast(`Loaded ${messages.length} messages ✓`);
-    } catch(e) {
-      showToast('Invalid JSON — check the format');
-    }
-  }
-
   function clearAll() {
-    if (!confirm('Clear ALL messages? This cannot be undone.')) return;
+    if (!confirm('Clear local cache? This removes messages from YOUR browser only — they stay in Google Sheets.')) return;
     messages = [];
-    saveMessages();
+    saveLocal();
     renderWall();
-    showToast('Cleared.');
+    showToast('Local cache cleared.');
   }
 
-  function showToast(msg) {
+  function showToast(msg, type='') {
     const t = document.getElementById('toast');
     t.textContent = msg;
+    t.className   = 'toast' + (type ? ' ' + type : '');
     t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2800);
+    setTimeout(() => t.classList.remove('show'), 3000);
   }
 
-  // Init
+  /* ── init ── */
   document.getElementById('footer-year').textContent = new Date().getFullYear();
-  loadMessages();
-
   const savedName = localStorage.getItem(NAME_KEY);
   if (savedName) document.getElementById('hero-name').textContent = savedName;
-
+  loadLocal();
   renderWall();
+  // auto-fetch on load if URL already saved
+  if (getScriptUrl()) fetchMessages();
 </script>
 </body>
 </html>
